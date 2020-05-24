@@ -1,6 +1,6 @@
-tag,fname
-eval_success_fraction_10,progress10-20
-eval_success_fraction_20,progress20-30
-eval_success_fraction_30,progress30-40
-eval_success_fraction_40,progress40-50
-eval_success_fraction_40,progress40-50
+tag,path
+eval_success_fraction_10,$HOME/neurips/progress10-20
+eval_success_fraction_20,$HOME/neurips/progress20-30
+eval_success_fraction_30,$HOME/neurips/progress30-40
+eval_success_fraction_40,$HOME/neurips/progress40-50
+eval_success_fraction_40,$HOME/neurips/progress40-50
