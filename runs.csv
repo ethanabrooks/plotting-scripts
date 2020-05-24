@@ -1,4 +1,4 @@
-origin path,local path,algorithm
+origin_path,local_path,algorithm
 rldl14:~/ppo/.runs/logdir/control-flow/pretrained/world-size6/control-flow/3conditions/transformer/paper/train1-10/eval10-50/,~/neurips/transformer,transformer
 rldl14:~/ppo/.runs/logdir/control-flow/pretrained/world-size6/control-flow/3conditions/no-roll-or-scan/paper/train1-10/eval10-50/,~/neurips/no-roll-or-scan,No roll or scan
 rldl16:~/ppo/.runs/logdir/control-flow/pretrained/world-size6/control-flow/3conditions/olsk/paper/train1-10/eval10-50/,~/neurips/olsk,OLSK
