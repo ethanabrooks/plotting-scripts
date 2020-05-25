@@ -1,11 +1,15 @@
 tag,path
+success_fraction,~/neurips/progress1-10
 eval_success_fraction_10,~/neurips/progress10-20
 eval_success_fraction_20,~/neurips/progress20-30
 eval_success_fraction_30,~/neurips/progress30-40
 eval_success_fraction_40,~/neurips/progress40-50
 eval_success_fraction_40,~/neurips/progress40-50
+eval_success_fraction,~/neurips/progress10-50
+rewards,~/neurips/reward1-10
 eval_success_10,~/neurips/reward10-20
 eval_success_20,~/neurips/reward20-30
 eval_success_30,~/neurips/reward30-40
 eval_success_40,~/neurips/reward40-50
 eval_success_40,~/neurips/reward40-50
+eval_rewards,~/neurips/reward10-50
