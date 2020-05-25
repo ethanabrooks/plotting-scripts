@@ -16,13 +16,14 @@ def main(plots_data: Path, runs_data: Path, limit: int, perform_copy: bool):
         paths = []
 
         def copy(origin_path, local_path, **_):
-            subprocess.run(
-                ["rsync", "-av", path_to_str(origin_path), path_to_str(local_path)]
-            )
+            cmd = f"""\
+rsync -avr  --include="**/" --include="**/events.*" --exclude="*" {origin_path} {Path(local_path).expanduser()}\
+"""
+            subprocess.run([cmd], shell=True)
 
         def append(algorithm, local_path, **_):
             names.append(f"'{algorithm}'")
-            paths.append(f"'{local_path}'")
+            paths.append(f"'{path_to_str(local_path)}'")
 
         for row in csv.DictReader(runs_file):
             if perform_copy:
@@ -43,6 +44,7 @@ def main(plots_data: Path, runs_data: Path, limit: int, perform_copy: bool):
                 + ["--limit", str(limit)]
                 + ["--fname", path_to_str(path)]
             )
+            print(cmd)
             window = session.new_window(window_name=tag, attach=True, window_shell=cmd)
 
         for row in plots_reader:
