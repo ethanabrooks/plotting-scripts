@@ -64,14 +64,17 @@ def main(
                             if match:
                                 value = value[0].simple_value
                                 if limit is None or event.step < limit:
-                                    yield match.groups()[0], value, name
+                                    jump = int(match.groups()[0])
+                                    yield jump, value, name
                     except DataLossError:
                         pass
                     except StopIteration:
                         break
 
     print("Plotting...")
-    data = pd.DataFrame(get_tags(), columns=["jump", "reward", "run"])
+    data = pd.DataFrame(get_tags(), columns=["jump", "reward", "run"]).sort_values(
+        "jump"
+    )
     sns.lineplot(x="jump", y="reward", hue="run", data=data)
     plt.legend(data["run"].unique())
     # plt.axes().ticklabel_format(style="sci", scilimits=(0, 0), axis="x")
