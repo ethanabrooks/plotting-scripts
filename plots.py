@@ -31,7 +31,6 @@ rsync -avr  --include="**/" --include="**/events.*" --exclude="*" {origin_path} 
             append(**row)
 
         plots_reader = csv.DictReader(plots_file)
-        next(plots_reader)  # skip header
         session = Server().new_session(session_name="plots", kill_session=True)
 
         def new_window(tag, path):
