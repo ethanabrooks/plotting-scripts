@@ -17,7 +17,7 @@ def main(plots_data: Path, runs_data: Path, limit: int, perform_copy: bool):
 
         def copy(origin_path, local_path, **_):
             cmd = f"""\
-rsync -avr  --include="**/" --include="**/events.*" --exclude="*" {origin_path} {Path(local_path).expanduser()}\
+rsync -avr  --include="**/" --include="**/*.hdf5" --exclude="*" {origin_path} {Path(local_path).expanduser()}\
 """
             subprocess.run([cmd], shell=True)
 
@@ -33,18 +33,20 @@ rsync -avr  --include="**/" --include="**/events.*" --exclude="*" {origin_path} 
         plots_reader = csv.DictReader(plots_file)
         session = Server().new_session(session_name="plots", kill_session=True)
 
-        def new_window(tag, path):
+        def new_window(column, start, stop, path):
             cmd = " ".join(
-                ["plot"]
+                ["python", "plot.py"]
                 + ["--names", *names]
-                + ["--base-dir", "''"]
+                + ["--line-length-range", start, stop]
                 + ["--paths", *paths]
-                + ["--tag", tag]
+                + ["--column", column]
                 + ["--limit", str(limit)]
                 + ["--fname", path_to_str(path)]
             )
             print(cmd)
-            window = session.new_window(window_name=tag, attach=True, window_shell=cmd)
+            window = session.new_window(
+                window_name=str(path), attach=True, window_shell=cmd
+            )
 
         for row in plots_reader:
             new_window(**row)

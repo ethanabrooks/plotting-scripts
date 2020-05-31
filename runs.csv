@@ -1,8 +1,8 @@
 origin_path,local_path,algorithm
-rldl16:~/ppo/.runs/logdir/neurips/ours2/,~/neurips/ours,Ours
-rldl17:~/ppo/.runs/logdir/neurips/no-roll/,~/neurips/no-roll,No roll
-rldl17:~/ppo/.runs/logdir/neurips/no-scan/,~/neurips/no-scan,No scan
-rldl17:~/ppo/.runs/logdir/neurips/no-roll-or-scan/,~/neurips/no-roll-or-scan,No roll or scan
-rldl14:~/ppo/.runs/logdir/neurips/no-pointer/,~/neurips/no-pointer,No pointer
-rldl16:~/ppo/.runs/logdir/neurips/olsk/,~/neurips/olsk,OLSK
-rldl15:~/ppo/.runs/logdir/neurips/transformer/,~/neurips/transformer,Transformer
+rldl17:~/ppo/.runs/logdir/neurips/simplify/eval1-50/ours5,~/neurips/ours,Ours
+rldl17:~/ppo/.runs/logdir/neurips/simplify/eval1-50/no-pointer/,~/neurips/no-pointer,No pointer
+rldl16:~/ppo/.runs/logdir/neurips/simplify/no-roll/,~/neurips/no-roll,No roll
+rldl16:~/ppo/.runs/logdir/neurips/simplify/no-scan/,~/neurips/no-scan,No scan
+rldl16:~/ppo/.runs/logdir/neurips/simplify/no-roll-or-scan/,~/neurips/no-roll-or-scan,No roll or scan
+rldl15:~/ppo/.runs/logdir/neurips/simplify/eval1-50/olsk/,~/neurips/olsk,OLSK
+rldl15:~/ppo/.runs/logdir/neurips/simplify/eval1-50/transformer/,~/neurips/transformer,Transformer
