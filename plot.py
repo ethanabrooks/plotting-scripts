@@ -23,7 +23,7 @@ def cli():
     parser.add_argument("--paths", nargs="*", type=Path)
     parser.add_argument("--quiet", action="store_true")
     parser.add_argument("--limit", type=int)
-    parser.add_argument("--column", type=int)
+    parser.add_argument("--tag", type=str)
     parser.add_argument("--line-length-range", nargs=2, type=int)
     parser.add_argument("--fname", type=str, default="plot")
     parser.add_argument("--quality", type=int)
@@ -34,7 +34,7 @@ def cli():
 def main(
     names: List[str],
     paths: List[Path],
-    column: int,
+    tag: str,
     limit: Optional[int],
     line_length_range: Tuple[int, int],
     quiet: bool,
@@ -51,20 +51,27 @@ def main(
 
             for hdf5_path in path.glob("**/*.hdf5"):
                 print("Reading", hdf5_path)
-                f = h5py.File(hdf5_path, "r")
-                dset = f["dataset"]
-                array = np.array(dset)
+                with h5py.File(hdf5_path, "r") as f:
+                    dset = f["dataset"]
+                    df = (
+                        pd.DataFrame(
+                            np.array(dset),
+                            columns=["step", "progress", "reward", "length"],
+                        )
+                        .groupby("step", sort=False)
+                        .mean()
+                    )
+                df["name"] = name
                 low, high = line_length_range
-                lengths = array[:, 3]
-                data = array[np.logical_and(low <= lengths, lengths <= high)]
-                yield pd.DataFrame(
-                    dict(step=data[:, 0], value=data[:, column], algorithm=name)
-                ).sort_values("step")
+                ix = (low <= df.index) & (df["length"] <= high)
+                if limit:
+                    ix &= df.index < limit
+                yield df[ix]
 
     data = pd.concat(get_dfs())
     print("Plotting...")
-    sns.lineplot(x="step", y="value", hue="algorithm", data=data)
-    plt.legend(data["algorithm"].unique())
+    sns.lineplot(x=data.index, y=tag, hue="name", data=data)
+    plt.legend(data["name"].unique())
     plt.axes().ticklabel_format(style="sci", scilimits=(0, 0), axis="x")
     plt.tight_layout()
     plt.savefig(**kwargs)

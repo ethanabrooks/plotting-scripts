@@ -33,13 +33,13 @@ rsync -avr  --include="**/" --include="**/*.hdf5" --exclude="*" {origin_path} {P
         plots_reader = csv.DictReader(plots_file)
         session = Server().new_session(session_name="plots", kill_session=True)
 
-        def new_window(column, start, stop, path):
+        def new_window(tag, start, stop, path):
             cmd = " ".join(
                 ["python", "plot.py"]
                 + ["--names", *names]
                 + ["--line-length-range", start, stop]
                 + ["--paths", *paths]
-                + ["--column", column]
+                + ["--tag", tag]
                 + ["--limit", str(limit)]
                 + ["--fname", path_to_str(path)]
             )
