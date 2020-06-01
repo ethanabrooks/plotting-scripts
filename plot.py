@@ -7,6 +7,7 @@ from typing import List, Optional, Tuple
 
 # third party
 import matplotlib.pyplot as plt
+import itertools
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -43,7 +44,7 @@ def main(
 
     assert len(names) == len(paths)
 
-    def get_dfs():
+    def get_dfs(low, high):
         for name, path in zip(names, paths):
             if not path.exists():
                 if not quiet:
@@ -53,22 +54,25 @@ def main(
                 print("Reading", hdf5_path)
                 with h5py.File(hdf5_path, "r") as f:
                     dset = f["dataset"]
-                    df = (
-                        pd.DataFrame(
-                            np.array(dset),
-                            columns=["step", "progress", "reward", "length"],
-                        )
-                        .groupby("step", sort=False)
-                        .mean()
-                    )
-                df["name"] = name
-                low, high = line_length_range
-                ix = (low <= df.index) & (df["length"] <= high)
+                    array = None
+                    for i in itertools.count():
+                        try:
+                            array = np.array(dset[:-i] if i > 0 else dset)
+                            break
+                        except OSError as e:
+                            print(f"Corrupt data at index -{i}.")
+                            print(e)
+                df = pd.DataFrame(
+                    array, columns=["step", "progress", "reward", "length"]
+                )
+                ix = (low <= df["length"]) & (df["length"] <= high)
                 if limit:
                     ix &= df.index < limit
-                yield df[ix]
+                df = df[ix]
+                df["name"] = name
+                yield df.groupby("step", sort=False).mean()
 
-    data = pd.concat(get_dfs())
+    data = pd.concat(get_dfs(*line_length_range))
     print("Plotting...")
     sns.lineplot(x=data.index, y=tag, hue="name", data=data)
     plt.legend(data["name"].unique())
