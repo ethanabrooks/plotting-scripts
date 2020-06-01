@@ -67,10 +67,10 @@ def main(
                 )
                 ix = (low <= df["length"]) & (df["length"] <= high)
                 if limit:
-                    ix &= df.index < limit
-                df = df[ix]
+                    ix &= df["step"] < limit
+                df = df[ix].groupby("step", sort=False).mean()
                 df["name"] = name
-                yield df.groupby("step", sort=False).mean()
+                yield df
 
     data = pd.concat(get_dfs(*line_length_range))
     print("Plotting...")
